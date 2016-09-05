@@ -1,0 +1,40 @@
+version: '2'
+volumes:
+    haproxy_cfg:
+      driver: local
+services:
+  app:
+    build: node-js
+    restart: always
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - MONGO_URL=mongodb://my_db:27017
+    links:
+      - db:my_db
+    depends_on:
+      - db
+  db:
+    restart: always
+    image: mongo:3
+  haproxy:
+    image: haproxy:1.6
+    ports: 
+        - "80:80"
+    depends_on:
+      - haproxy-gen
+    volumes:
+      - haproxy_cfg:/usr/local/etc/haproxy/
+    restart: "always"
+    links:
+      - app
+  haproxy-gen:
+    build: dockergen
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - haproxy_cfg:/usr/local/etc/haproxy/
+    environment:
+      - "BACKEND=app"
+      - "BACKEND_PORT=3000"
+      - "SERVICE=haproxy"
+      - "PROJECT=palindrome"
