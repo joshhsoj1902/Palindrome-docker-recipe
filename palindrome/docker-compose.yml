@@ -4,7 +4,7 @@ volumes:
       driver: local
 services:
   app:
-    build: node-js
+    build: palindrome-app
     restart: always
     environment:
       - PORT=5000
