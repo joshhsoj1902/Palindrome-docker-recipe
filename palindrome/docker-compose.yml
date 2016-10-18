@@ -4,7 +4,7 @@ volumes:
       driver: local
 services:
   app:
-    build: palindrome-app
+    image: joshhsoj1902/palindrome
     restart: always
     environment:
       - PORT=5000
