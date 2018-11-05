@@ -18,7 +18,7 @@ services:
     restart: always
     image: mongo:3
   haproxy:
-    image: haproxy:1.6
+    image: haproxy:1.8
     ports: 
         - "80:80"
     depends_on:
